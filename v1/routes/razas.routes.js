@@ -1,25 +1,17 @@
 const express = require("express");
 
+const razasController = require("../controllers/razas.controller");
+
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.send("Listado de razas");
-});
+router.get("/", razasController.listarRazas);
 
-router.get("/:id", (req, res) => {
-    res.send("Raza " + req.params.id);
-});
+router.get("/:id", razasController.obtenerRaza);
 
-router.post("/", (req, res) => {
-    res.send("Crear raza");
-});
+router.post("/", razasController.crearRaza);
 
-router.put("/:id", (req, res) => {
-    res.send("Modificar raza " + req.params.id);
-});
+router.put("/:id", razasController.modificarRaza);
 
-router.delete("/:id", (req, res) => {
-    res.send("Eliminar raza " + req.params.id);
-});
+router.delete("/:id", razasController.eliminarRaza);
 
 module.exports = router;

@@ -1,25 +1,17 @@
 const express = require("express");
 
+const animalesController = require("../controllers/animales.controller");
+
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.send("Listado de animales");
-});
+router.get("/", animalesController.listarAnimales);
 
-router.get("/:id", (req, res) => {
-    res.send("Animal " + req.params.id);
-});
+router.get("/:id", animalesController.obtenerAnimal);
 
-router.post("/", (req, res) => {
-    res.send("Crear animal");
-});
+router.post("/", animalesController.crearAnimal);
 
-router.put("/:id", (req, res) => {
-    res.send("Modificar animal " + req.params.id);
-});
+router.put("/:id", animalesController.modificarAnimal);
 
-router.delete("/:id", (req, res) => {
-    res.send("Eliminar animal " + req.params.id);
-});
+router.delete("/:id", animalesController.eliminarAnimal);
 
 module.exports = router;

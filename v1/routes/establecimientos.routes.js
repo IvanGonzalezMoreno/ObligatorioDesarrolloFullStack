@@ -1,25 +1,17 @@
 const express = require("express");
 
+const establecimientosController = require("../controllers/establecimientos.controller");
+
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.send("Listado de establecimientos");
-});
+router.get("/", establecimientosController.listarEstablecimientos);
 
-router.get("/:id", (req, res) => {
-    res.send("Establecimiento " + req.params.id);
-});
+router.get("/:id", establecimientosController.obtenerEstablecimiento);
 
-router.post("/", (req, res) => {
-    res.send("Crear establecimiento");
-});
+router.post("/", establecimientosController.crearEstablecimiento);
 
-router.put("/:id", (req, res) => {
-    res.send("Modificar establecimiento " + req.params.id);
-});
+router.put("/:id", establecimientosController.modificarEstablecimiento);
 
-router.delete("/:id", (req, res) => {
-    res.send("Eliminar establecimiento " + req.params.id);
-});
+router.delete("/:id", establecimientosController.eliminarEstablecimiento);
 
 module.exports = router;
