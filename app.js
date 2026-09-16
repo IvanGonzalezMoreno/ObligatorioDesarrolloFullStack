@@ -5,6 +5,8 @@ import animalesRoutes from "./v1/routes/animales.routes.js";
 import razasRoutes from "./v1/routes/razas.routes.js";
 import movimientosRoutes from "./v1/routes/movimientos.routes.js";
 
+import { conectarBaseDeDatos } from "./v1/config/database.js";
+
 const app = express();
 
 const PORT = 3000;
@@ -18,6 +20,8 @@ app.use("/v1/establecimientos", establecimientosRoutes);
 app.use("/v1/razas", razasRoutes);
 
 app.use("/v1/movimientos", movimientosRoutes);
+
+conectarBaseDeDatos();
 
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
