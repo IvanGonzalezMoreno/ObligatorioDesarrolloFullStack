@@ -1,19 +1,39 @@
-export function listarMovimientos(req, res) {
-    res.send("Listado de Movimientos");
+import { listarMovimientos as listarMovimientosService } from "../services/movimientos.service.js";
+
+import { obtenerMovimiento as obtenerMovimientoService } from "../services/movimientos.service.js";
+
+import { crearMovimiento as crearMovimientoService } from "../services/movimientos.service.js";
+
+import { modificarMovimiento as modificarMovimientoService } from "../services/movimientos.service.js";
+
+import { eliminarMovimiento as eliminarMovimientoService } from "../services/movimientos.service.js";
+
+export async function listarMovimientos(req, res) {
+    const movimientos = await listarMovimientosService();
+
+    res.status(200).json(movimientos);
 }
 
-export function obtenerMovimiento(req, res) {
-    res.send("Movimiento " + req.params.id);
+export async function obtenerMovimiento(req, res) {
+    const movimiento = await obtenerMovimientoService(req.params.id);
+
+    res.status(200).json(movimiento);
 }
 
-export function crearMovimiento(req, res) {
-    res.send("Crear Movimiento");
+export async function crearMovimiento(req, res) {
+    const movimiento = await crearMovimientoService(req.body);
+    
+    res.status(201).json(movimiento);
 }
 
-export function modificarMovimiento(req, res) {
-    res.send("Modificar Movimiento " + req.params.id);
+export async function modificarMovimiento(req, res) {
+    const movimiento = await modificarMovimientoService(req.params.id, req.body);
+
+    res.status(200).json(movimiento);
 }
 
-export function eliminarMovimiento(req, res) {
-    res.send("Eliminar Movimiento " + req.params.id);
+export async function eliminarMovimiento(req, res) {
+    const movimiento = await eliminarMovimientoService(req.params.id);
+
+    res.status(200).json(movimiento);
 }

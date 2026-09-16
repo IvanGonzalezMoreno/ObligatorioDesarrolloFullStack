@@ -1,19 +1,39 @@
-export function listarEstablecimientos(req, res) {
-    res.send("Listado de Establecimientos");
+import { listarEstablecimientos as listarEstablecimientosService } from "../services/establecimientos.service.js";
+
+import { obtenerEstablecimiento as obtenerEstablecimientoService } from "../services/establecimientos.service.js";
+
+import { crearEstablecimiento as crearEstablecimientoService } from "../services/establecimientos.service.js";
+
+import { modificarEstablecimiento as modificarEstablecimientoService } from "../services/establecimientos.service.js";
+
+import { eliminarEstablecimiento as eliminarEstablecimientoService } from "../services/establecimientos.service.js";
+
+export async function listarEstablecimientos(req, res) {
+    const establecimientos = await listarEstablecimientosService();
+
+    res.status(200).json(establecimientos);
 }
 
-export function obtenerEstablecimiento(req, res) {
-    res.send("Establecimiento " + req.params.id);
+export async function obtenerEstablecimiento(req, res) {
+    const establecimiento = await obtenerEstablecimientoService(req.params.id);
+
+    res.status(200).json(establecimiento);
 }
 
-export function crearEstablecimiento(req, res) {
-    res.send("Crear Establecimiento");
+export async function crearEstablecimiento(req, res) {
+    const establecimiento = await crearEstablecimientoService(req.body);
+    
+    res.status(201).json(establecimiento);
 }
 
-export function modificarEstablecimiento(req, res) {
-    res.send("Modificar Establecimiento " + req.params.id);
+export async function modificarEstablecimiento(req, res) {
+    const establecimiento = await modificarEstablecimientoService(req.params.id, req.body);
+
+    res.status(200).json(establecimiento);
 }
 
-export function eliminarEstablecimiento(req, res) {
-    res.send("Eliminar Establecimiento " + req.params.id);
+export async function eliminarEstablecimiento(req, res) {
+    const establecimiento = await eliminarEstablecimientoService(req.params.id);
+
+    res.status(200).json(establecimiento);
 }

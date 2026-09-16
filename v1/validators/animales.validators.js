@@ -16,7 +16,9 @@ export const crearAnimalSchema = Joi.object({
     peso: Joi.number().required().messages({
         "number.base": "El peso debe ser un número",
         "any.required": "El peso es obligatorio"
-    })
+    }),
+
+    establecimiento: Joi.string().required()
 });
 
 export const modificarAnimalSchema = Joi.object({

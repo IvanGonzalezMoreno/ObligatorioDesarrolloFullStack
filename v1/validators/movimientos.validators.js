@@ -1,15 +1,15 @@
 import Joi from "joi";
 
 export const crearMovimientoSchema = Joi.object({
-    animalId: Joi.number().required(),
-    establecimientoOrigenId: Joi.number().required(),
-    establecimientoDestinoId: Joi.number().required(),
+    animal: Joi.string().required(),
+    establecimientoOrigen: Joi.string().required(),
+    establecimientoDestino: Joi.string().required(),
     fecha: Joi.date().required()
 });
 
 export const modificarMovimientoSchema = Joi.object({
-    animalId: Joi.number(),
-    establecimientoOrigenId: Joi.number(),
-    establecimientoDestinoId: Joi.number(),
+    animal: Joi.string(),
+    establecimientoOrigen: Joi.string(),
+    establecimientoDestino: Joi.string(),
     fecha: Joi.date()
 });
