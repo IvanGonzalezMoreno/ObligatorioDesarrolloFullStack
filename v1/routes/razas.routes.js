@@ -1,6 +1,10 @@
-const express = require("express");
+import express from "express";
 
-const razasController = require("../controllers/razas.controller");
+import * as razasController from "../controllers/razas.controllers.js";
+
+import { validateBodyMiddleware } from "../middlewares/validateBody.middleware.js";
+
+import { crearRazaSchema, modificarRazaSchema } from "../validators/razas.validators.js";
 
 const router = express.Router();
 
@@ -8,10 +12,10 @@ router.get("/", razasController.listarRazas);
 
 router.get("/:id", razasController.obtenerRaza);
 
-router.post("/", razasController.crearRaza);
+router.post("/", validateBodyMiddleware(crearRazaSchema), razasController.crearRaza);
 
-router.put("/:id", razasController.modificarRaza);
+router.put("/:id", validateBodyMiddleware(modificarRazaSchema), razasController.modificarRaza);
 
 router.delete("/:id", razasController.eliminarRaza);
 
-module.exports = router;
+export default router;

@@ -1,6 +1,10 @@
-const express = require("express");
+import express from "express";
 
-const movimientosController = require("../controllers/movimientos.controller");
+import * as movimientosController from "../controllers/movimientos.controllers.js";
+
+import { validateBodyMiddleware } from "../middlewares/validateBody.middleware.js";
+
+import { crearMovimientoSchema, modificarMovimientoSchema } from "../validators/movimientos.validators.js";
 
 const router = express.Router();
 
@@ -8,10 +12,10 @@ router.get("/", movimientosController.listarMovimientos);
 
 router.get("/:id", movimientosController.obtenerMovimiento);
 
-router.post("/", movimientosController.crearMovimiento);
+router.post("/", validateBodyMiddleware(crearMovimientoSchema), movimientosController.crearMovimiento);
 
-router.put("/:id", movimientosController.modificarMovimiento);
+router.put("/:id", validateBodyMiddleware(modificarMovimientoSchema), movimientosController.modificarMovimiento);
 
 router.delete("/:id", movimientosController.eliminarMovimiento);
 
-module.exports = router;
+export default router;

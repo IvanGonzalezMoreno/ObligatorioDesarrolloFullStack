@@ -1,6 +1,10 @@
-const express = require("express");
+import express from "express";
 
-const animalesController = require("../controllers/animales.controller");
+import * as animalesController from "../controllers/animales.controllers.js";
+
+import { validateBodyMiddleware } from "../middlewares/validateBody.middleware.js";
+
+import { crearAnimalSchema, modificarAnimalSchema } from "../validators/animales.validators.js";
 
 const router = express.Router();
 
@@ -8,10 +12,10 @@ router.get("/", animalesController.listarAnimales);
 
 router.get("/:id", animalesController.obtenerAnimal);
 
-router.post("/", animalesController.crearAnimal);
+router.post("/", validateBodyMiddleware(crearAnimalSchema), animalesController.crearAnimal);
 
-router.put("/:id", animalesController.modificarAnimal);
+router.put("/:id", validateBodyMiddleware(modificarAnimalSchema), animalesController.modificarAnimal);
 
 router.delete("/:id", animalesController.eliminarAnimal);
 
-module.exports = router;
+export default router;

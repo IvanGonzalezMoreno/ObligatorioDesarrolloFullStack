@@ -1,12 +1,9 @@
-const express = require("express");
+import express from "express";
 
-const establecimientosRoutes = require("./v1/routes/establecimientos.routes");
-
-const animalesRoutes = require("./v1/routes/animales.routes");
-
-const razasRoutes = require("./v1/routes/razas.routes");
-
-const movimientosRoutes = require("./v1/routes/movimientos.routes");
+import establecimientosRoutes from "./v1/routes/establecimientos.routes.js";
+import animalesRoutes from "./v1/routes/animales.routes.js";
+import razasRoutes from "./v1/routes/razas.routes.js";
+import movimientosRoutes from "./v1/routes/movimientos.routes.js";
 
 const app = express();
 

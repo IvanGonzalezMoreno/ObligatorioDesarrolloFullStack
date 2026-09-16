@@ -1,6 +1,10 @@
-const express = require("express");
+import express from "express";
 
-const establecimientosController = require("../controllers/establecimientos.controller");
+import * as establecimientosController from "../controllers/establecimientos.controllers.js";
+
+import { validateBodyMiddleware } from "../middlewares/validateBody.middleware.js";
+
+import { crearEstablecimientoSchema, modificarEstablecimientoSchema } from "../validators/establecimientos.validators.js";
 
 const router = express.Router();
 
@@ -8,10 +12,10 @@ router.get("/", establecimientosController.listarEstablecimientos);
 
 router.get("/:id", establecimientosController.obtenerEstablecimiento);
 
-router.post("/", establecimientosController.crearEstablecimiento);
+router.post("/", validateBodyMiddleware(crearEstablecimientoSchema), establecimientosController.crearEstablecimiento);
 
-router.put("/:id", establecimientosController.modificarEstablecimiento);
+router.put("/:id", validateBodyMiddleware(modificarEstablecimientoSchema), establecimientosController.modificarEstablecimiento);
 
 router.delete("/:id", establecimientosController.eliminarEstablecimiento);
 
-module.exports = router;
+export default router;
