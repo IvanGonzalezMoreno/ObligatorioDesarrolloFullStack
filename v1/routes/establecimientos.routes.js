@@ -6,16 +6,18 @@ import { validateBodyMiddleware } from "../middlewares/validateBody.middleware.j
 
 import { crearEstablecimientoSchema, modificarEstablecimientoSchema } from "../validators/establecimientos.validators.js";
 
+import { autenticarUsuario } from "../middlewares/auth.middleware.js";
+
 const router = express.Router();
 
-router.get("/", establecimientosController.listarEstablecimientos);
+router.get("/", autenticarUsuario, establecimientosController.listarEstablecimientos);
 
-router.get("/:id", establecimientosController.obtenerEstablecimiento);
+router.get("/:id", autenticarUsuario, establecimientosController.obtenerEstablecimiento);
 
-router.post("/", validateBodyMiddleware(crearEstablecimientoSchema), establecimientosController.crearEstablecimiento);
+router.post("/", autenticarUsuario, validateBodyMiddleware(crearEstablecimientoSchema), establecimientosController.crearEstablecimiento);
 
-router.put("/:id", validateBodyMiddleware(modificarEstablecimientoSchema), establecimientosController.modificarEstablecimiento);
+router.put("/:id", autenticarUsuario, validateBodyMiddleware(modificarEstablecimientoSchema), establecimientosController.modificarEstablecimiento);
 
-router.delete("/:id", establecimientosController.eliminarEstablecimiento);
+router.delete("/:id", autenticarUsuario, establecimientosController.eliminarEstablecimiento);
 
 export default router;

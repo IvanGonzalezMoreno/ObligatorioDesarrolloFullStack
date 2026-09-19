@@ -21,8 +21,17 @@ export async function obtenerEstablecimiento(req, res) {
 }
 
 export async function crearEstablecimiento(req, res) {
-    const establecimiento = await crearEstablecimientoService(req.body);
-    
+
+    const establecimiento = await crearEstablecimientoService(
+        req.body, req.usuario.id
+    );
+
+    if (establecimiento === null) {
+        return res.status(400).json({
+            error: "El usuario alcanzó el límite de 4 establecimientos del plan plus"
+        });
+    }
+
     res.status(201).json(establecimiento);
 }
 
