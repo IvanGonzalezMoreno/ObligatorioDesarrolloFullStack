@@ -4,6 +4,7 @@ import establecimientosRoutes from "./v1/routes/establecimientos.routes.js";
 import animalesRoutes from "./v1/routes/animales.routes.js";
 import razasRoutes from "./v1/routes/razas.routes.js";
 import movimientosRoutes from "./v1/routes/movimientos.routes.js";
+import authRoutes from "./v1/routes/auth.routes.js";
 
 import { conectarBaseDeDatos } from "./v1/config/database.js";
 
@@ -20,6 +21,8 @@ app.use("/v1/establecimientos", establecimientosRoutes);
 app.use("/v1/razas", razasRoutes);
 
 app.use("/v1/movimientos", movimientosRoutes);
+
+app.use("/v1/auth", authRoutes);
 
 conectarBaseDeDatos();
 
