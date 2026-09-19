@@ -6,13 +6,17 @@ import { validateBodyMiddleware } from "../middlewares/validateBody.middleware.j
 
 import { crearRazaSchema, modificarRazaSchema } from "../validators/razas.validators.js";
 
+import { autenticarUsuario } from "../middlewares/auth.middleware.js";
+
+import { verificarAdmin } from "../middlewares/rol.middleware.js";
+
 const router = express.Router();
 
 router.get("/", razasController.listarRazas);
 
 router.get("/:id", razasController.obtenerRaza);
 
-router.post("/", validateBodyMiddleware(crearRazaSchema), razasController.crearRaza);
+router.post("/", autenticarUsuario, verificarAdmin, validateBodyMiddleware(crearRazaSchema), razasController.crearRaza);
 
 router.put("/:id", validateBodyMiddleware(modificarRazaSchema), razasController.modificarRaza);
 

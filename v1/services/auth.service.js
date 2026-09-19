@@ -1,5 +1,7 @@
 import bcrypt from "bcryptjs";
 
+import jwt from "jsonwebtoken";
+
 import Usuario from "../models/usuario.model.js";
 
 export async function registrarUsuario(datos) {
@@ -33,5 +35,20 @@ export async function iniciarSesion(datos) {
         return null;
     }
 
-    return usuario;
+    const token = jwt.sign(
+        {
+            id: usuario._id,
+            username: usuario.username,
+            rol: usuario.rol,
+            plan: usuario.plan
+        },
+        "clave-secreta",
+        {
+            expiresIn: "1h"
+        }
+    );
+
+    return {
+        token
+    };
 }
