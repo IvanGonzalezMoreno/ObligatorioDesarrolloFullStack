@@ -42,7 +42,7 @@ export async function iniciarSesion(datos) {
             rol: usuario.rol,
             plan: usuario.plan
         },
-        "clave-secreta",
+        process.env.JWT_SECRET  ,
         {
             expiresIn: "1h"
         }

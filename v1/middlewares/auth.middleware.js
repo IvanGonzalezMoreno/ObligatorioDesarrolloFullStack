@@ -14,7 +14,7 @@ export function autenticarUsuario(req, res, next) {
 
     try {
 
-        const usuario = jwt.verify(token, "clave-secreta");
+        const usuario = jwt.verify(token, process.env.JWT_SECRET);
 
         req.usuario = usuario;
 

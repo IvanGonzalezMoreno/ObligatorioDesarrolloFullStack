@@ -3,12 +3,16 @@ import { registrarUsuario as registrarUsuarioService } from "../services/auth.se
 import { iniciarSesion as iniciarSesionService } from "../services/auth.service.js";
 
 export async function registrarUsuario(req, res) {
-
-    console.log(req.body);
-
     const usuario = await registrarUsuarioService(req.body);
 
-    res.status(201).json(usuario);
+    const usuarioRespuesta = {
+        id: usuario._id,
+        username: usuario.username,
+        plan: usuario.plan,
+        rol: usuario.rol
+    };
+
+    res.status(201).json(usuarioRespuesta);
 }
 
 export async function iniciarSesion(req, res) {
