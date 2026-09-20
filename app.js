@@ -11,7 +11,7 @@ import { conectarBaseDeDatos } from "./v1/config/database.js";
 
 const app = express();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 

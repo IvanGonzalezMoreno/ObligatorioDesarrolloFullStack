@@ -6,8 +6,7 @@ import Usuario from "../models/usuario.model.js";
 
 export async function registrarUsuario(datos) {
 
-    const passwordHasheada = await bcrypt.hash(datos.password, 10);
-
+    const passwordHasheada = await bcrypt.hash(datos.password, Number(process.env.SALT_ROUNDS));
     const usuario = await Usuario.create({
         username: datos.username,
         password: passwordHasheada
