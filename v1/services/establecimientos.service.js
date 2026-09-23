@@ -2,6 +2,10 @@ import Establecimiento from "../models/establecimiento.model.js";
 
 import Usuario from "../models/usuario.model.js";
 
+import Animal from "../models/animal.model.js";
+
+import { generarRespuesta } from "./ai.services.js";
+
 export async function listarEstablecimientos() {
     return await Establecimiento.find();
 }
@@ -33,4 +37,50 @@ export async function modificarEstablecimiento(id, datos) {
 
 export async function eliminarEstablecimiento(id) {
     return await Establecimiento.findByIdAndDelete(id);
+}
+
+export async function obtenerAnimalesDelEstablecimiento(id) {
+    return await Animal.find({
+        establecimiento: id
+    });
+}
+
+export async function analizarEstablecimiento(id) {
+
+    const animales = await obtenerAnimalesDelEstablecimiento(id);
+
+    const prompt = `Analiza los siguientes animales de un establecimiento ganadero.
+
+                    Datos de los animales: ${JSON.stringify(animales)}
+
+                    Calcula el peso promedio, identifica el animal más pesado y el más liviano, y realiza una breve interpretación de los datos. 
+
+                    IMPORTANTE:
+                    - Responde únicamente en texto plano.
+                    - No uses Markdown.
+                    - No uses tablas.
+                    - No uses LaTeX.
+                    - No uses símbolos matemáticos.
+                    - Usa solamente caracteres ASCII cuando sea posible.
+                    - Usa espacios normales.
+                    - Usa solamente el guion normal (-).
+                    - No uses emojis.
+                    - No agregues caracteres especiales de formato.
+                    - Sé breve y claro.
+
+                    Formato:
+                    Peso promedio: X kg
+                    Animal más pesado: X kg (caravana XXX)
+                    Animal más liviano: X kg (caravana XXX)
+
+                    Interpretación: ...      
+                    `;
+
+    const analisis = await generarRespuesta(prompt);
+
+    if (!analisis) {
+        return null;
+    }
+
+    return analisis;
 }

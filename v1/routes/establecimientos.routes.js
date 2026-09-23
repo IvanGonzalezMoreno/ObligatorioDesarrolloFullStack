@@ -12,6 +12,8 @@ const router = express.Router();
 
 router.get("/", autenticarUsuario, establecimientosController.listarEstablecimientos);
 
+router.get("/:id/analisis", autenticarUsuario, establecimientosController.analizarEstablecimiento);
+
 router.get("/:id", autenticarUsuario, establecimientosController.obtenerEstablecimiento);
 
 router.post("/", autenticarUsuario, validateBodyMiddleware(crearEstablecimientoSchema), establecimientosController.crearEstablecimiento);

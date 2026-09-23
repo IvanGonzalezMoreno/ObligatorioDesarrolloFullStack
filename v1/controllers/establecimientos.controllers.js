@@ -8,6 +8,8 @@ import { modificarEstablecimiento as modificarEstablecimientoService } from "../
 
 import { eliminarEstablecimiento as eliminarEstablecimientoService } from "../services/establecimientos.service.js";
 
+import { analizarEstablecimiento as analizarEstablecimientoService } from "../services/establecimientos.service.js";
+
 export async function listarEstablecimientos(req, res) {
     const establecimientos = await listarEstablecimientosService();
 
@@ -45,4 +47,20 @@ export async function eliminarEstablecimiento(req, res) {
     const establecimiento = await eliminarEstablecimientoService(req.params.id);
 
     res.status(200).json(establecimiento);
+}
+
+export async function analizarEstablecimiento(req, res) {
+    const analisis = await analizarEstablecimientoService(
+        req.params.id
+    );
+
+    if (!analisis) {
+        return res.status(503).json({
+            error: "El servicio de análisis no está disponible"
+        });
+    }
+
+    res.status(200).json({
+        analisis
+    });
 }
