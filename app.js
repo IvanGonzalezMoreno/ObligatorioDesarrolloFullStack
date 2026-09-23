@@ -12,8 +12,6 @@ import { conectarBaseDeDatos } from "./v1/config/database.js";
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
-
 app.use(express.json());
 
 app.use("/v1/animales", animalesRoutes);
@@ -32,6 +30,4 @@ app.use("/v1/uploads", uploadsRoutes)
 
 conectarBaseDeDatos();
 
-app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
-});
+export default app;
