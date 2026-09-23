@@ -6,6 +6,7 @@ import razasRoutes from "./v1/routes/razas.routes.js";
 import movimientosRoutes from "./v1/routes/movimientos.routes.js";
 import authRoutes from "./v1/routes/auth.routes.js";
 import planesRoutes from "./v1/routes/planes.routes.js";
+import uploadsRoutes from "./v1/routes/uploads.routes.js";
 
 import { conectarBaseDeDatos } from "./v1/config/database.js";
 
@@ -26,6 +27,8 @@ app.use("/v1/movimientos", movimientosRoutes);
 app.use("/v1/auth", authRoutes);
 
 app.use("/v1/planes", planesRoutes);
+
+app.use("/v1/uploads", uploadsRoutes)
 
 conectarBaseDeDatos();
 
