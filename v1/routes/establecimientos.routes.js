@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get("/", establecimientosController.listarEstablecimientos);
 
-router.get("/:id/analisis", establecimientosController.analizarEstablecimiento);
+router.post("/:id/analisis", establecimientosController.analizarEstablecimiento);
 
 router.get("/:id", establecimientosController.obtenerEstablecimiento);
 
