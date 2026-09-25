@@ -10,6 +10,8 @@ import { eliminarEstablecimiento as eliminarEstablecimientoService } from "../se
 
 import { analizarEstablecimiento as analizarEstablecimientoService } from "../services/establecimientos.service.js";
 
+import { obtenerClimaEstablecimiento as obtenerClimaEstablecimientoService } from "../services/establecimientos.service.js";
+
 export async function listarEstablecimientos(req, res) {
     const establecimientos = await listarEstablecimientosService();
 
@@ -63,4 +65,23 @@ export async function analizarEstablecimiento(req, res) {
     res.status(200).json({
         analisis
     });
+}
+
+export async function obtenerClimaEstablecimiento(req, res) {
+
+    const resultado = await obtenerClimaEstablecimientoService(req.params.id);
+
+    if (!resultado.encontrado) {
+        return res.status(404).json({
+            error: "Establecimiento no encontrado"
+        });
+    }
+
+    if (!resultado.clima) {
+        return res.status(503).json({
+            error: "El servicio de clima no está disponible"
+        });
+    }
+
+    res.status(200).json(resultado.clima);
 }

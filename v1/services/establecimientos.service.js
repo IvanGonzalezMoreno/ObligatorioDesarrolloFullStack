@@ -6,6 +6,8 @@ import Animal from "../models/animal.model.js";
 
 import { generarRespuesta } from "./ai.services.js";
 
+import { obtenerClimaPorDepartamento } from "./clima.service.js";
+
 export async function listarEstablecimientos() {
     return await Establecimiento.find();
 }
@@ -83,4 +85,21 @@ export async function analizarEstablecimiento(id) {
     }
 
     return analisis;
+}
+
+export async function obtenerClimaEstablecimiento(id) {
+
+    const establecimiento = await Establecimiento.findById(id);
+
+    if (!establecimiento) {
+        return { encontrado: false };
+    }
+
+    const clima = await obtenerClimaPorDepartamento(establecimiento.departamento);
+
+    if (!clima) {
+        return { encontrado: true, clima: null };
+    }
+
+    return { encontrado: true, clima };
 }

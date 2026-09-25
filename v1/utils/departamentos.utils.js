@@ -1,0 +1,21 @@
+export const COORDENADAS_DEPARTAMENTOS = {
+    "Artigas": { lat: -30.4, lon: -56.47 },
+    "Canelones": { lat: -34.52, lon: -56.28 },
+    "Cerro Largo": { lat: -32.37, lon: -54.17 },
+    "Colonia": { lat: -34.47, lon: -57.84 },
+    "Durazno": { lat: -33.37, lon: -56.52 },
+    "Flores": { lat: -33.63, lon: -56.88 },
+    "Florida": { lat: -34.1, lon: -56.22 },
+    "Lavalleja": { lat: -34.13, lon: -55.02 },
+    "Maldonado": { lat: -34.9, lon: -54.95 },
+    "Montevideo": { lat: -34.9, lon: -56.16 },
+    "Paysandú": { lat: -32.32, lon: -58.08 },
+    "Río Negro": { lat: -32.93, lon: -58.23 },
+    "Rivera": { lat: -30.9, lon: -55.55 },
+    "Rocha": { lat: -34.48, lon: -54.33 },
+    "Salto": { lat: -31.38, lon: -57.97 },
+    "San José": { lat: -34.34, lon: -56.7 },
+    "Soriano": { lat: -33.4, lon: -58.32 },
+    "Tacuarembó": { lat: -31.72, lon: -55.98 },
+    "Treinta y Tres": { lat: -33.23, lon: -54.38 }
+};

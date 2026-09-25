@@ -12,6 +12,8 @@ router.get("/", establecimientosController.listarEstablecimientos);
 
 router.post("/:id/analisis", establecimientosController.analizarEstablecimiento);
 
+router.get("/:id/clima", establecimientosController.obtenerClimaEstablecimiento);
+
 router.get("/:id", establecimientosController.obtenerEstablecimiento);
 
 router.post("/", validateBodyMiddleware(crearEstablecimientoSchema), establecimientosController.crearEstablecimiento);
