@@ -9,9 +9,15 @@ import { modificarMovimiento as modificarMovimientoService } from "../services/m
 import { eliminarMovimiento as eliminarMovimientoService } from "../services/movimientos.service.js";
 
 export async function listarMovimientos(req, res) {
-    const movimientos = await listarMovimientosService();
 
-    res.status(200).json(movimientos);
+    const { animal, establecimientoOrigen, establecimientoDestino, fechaDesde, fechaHasta, page, limit } = req.query;
+
+    const resultado = await listarMovimientosService(
+        { animal, establecimientoOrigen, establecimientoDestino, fechaDesde, fechaHasta },
+        { page, limit }
+    );
+
+    res.status(200).json(resultado);
 }
 
 export async function obtenerMovimiento(req, res) {

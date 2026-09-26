@@ -13,9 +13,15 @@ import { analizarEstablecimiento as analizarEstablecimientoService } from "../se
 import { obtenerClimaEstablecimiento as obtenerClimaEstablecimientoService } from "../services/establecimientos.service.js";
 
 export async function listarEstablecimientos(req, res) {
-    const establecimientos = await listarEstablecimientosService();
 
-    res.status(200).json(establecimientos);
+    const { departamento, page, limit } = req.query;
+
+    const resultado = await listarEstablecimientosService(
+        { departamento },
+        { page, limit }
+    );
+
+    res.status(200).json(resultado);
 }
 
 export async function obtenerEstablecimiento(req, res) {

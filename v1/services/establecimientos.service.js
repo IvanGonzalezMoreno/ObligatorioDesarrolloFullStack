@@ -8,8 +8,31 @@ import { generarRespuesta } from "./ai.services.js";
 
 import { obtenerClimaPorDepartamento } from "./clima.service.js";
 
-export async function listarEstablecimientos() {
-    return await Establecimiento.find();
+export async function listarEstablecimientos(filtros = {}, paginacion = {}) {
+
+    const { departamento } = filtros;
+    const { page = 1, limit = 10 } = paginacion;
+
+    const query = {};
+
+    if (departamento) query.departamento = departamento;
+
+    const skip = (Number(page) - 1) * Number(limit);
+
+    const [establecimientos, total] = await Promise.all([
+        Establecimiento.find(query).skip(skip).limit(Number(limit)),
+        Establecimiento.countDocuments(query)
+    ]);
+
+    return {
+        data: establecimientos,
+        pagination: {
+            page: Number(page),
+            limit: Number(limit),
+            total,
+            totalPages: Math.ceil(total / Number(limit))
+        }
+    };
 }
 
 export async function obtenerEstablecimiento(id) {
