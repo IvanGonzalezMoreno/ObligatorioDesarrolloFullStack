@@ -20,7 +20,10 @@ export async function listarEstablecimientos(filtros = {}, paginacion = {}) {
     const skip = (Number(page) - 1) * Number(limit);
 
     const [establecimientos, total] = await Promise.all([
-        Establecimiento.find(query).skip(skip).limit(Number(limit)),
+        Establecimiento.find(query)
+            .skip(skip)
+            .limit(Number(limit))
+            .populate("usuario", "-password"),
         Establecimiento.countDocuments(query)
     ]);
 
@@ -36,7 +39,7 @@ export async function listarEstablecimientos(filtros = {}, paginacion = {}) {
 }
 
 export async function obtenerEstablecimiento(id) {
-    return await Establecimiento.findById(id);
+    return await Establecimiento.findById(id).populate("usuario", "-password");
 }
 
 export async function crearEstablecimiento(datos, usuarioId) {

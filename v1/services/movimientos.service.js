@@ -20,7 +20,12 @@ export async function listarMovimientos(filtros = {}, paginacion = {}) {
     const skip = (Number(page) - 1) * Number(limit);
 
     const [movimientos, total] = await Promise.all([
-        Movimiento.find(query).skip(skip).limit(Number(limit)),
+        Movimiento.find(query)
+            .skip(skip)
+            .limit(Number(limit))
+            .populate("animal")
+            .populate("establecimientoOrigen")
+            .populate("establecimientoDestino"),
         Movimiento.countDocuments(query)
     ]);
 
@@ -36,7 +41,10 @@ export async function listarMovimientos(filtros = {}, paginacion = {}) {
 }
 
 export async function obtenerMovimiento(id) {
-    return await Movimiento.findById(id);
+    return await Movimiento.findById(id)
+        .populate("animal")
+        .populate("establecimientoOrigen")
+        .populate("establecimientoDestino");
 }
 
 export async function crearMovimiento(datos) {
