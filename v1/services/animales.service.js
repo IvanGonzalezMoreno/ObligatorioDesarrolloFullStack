@@ -45,6 +45,15 @@ export async function obtenerAnimal(id) {
 }
 
 export async function crearAnimal(datos) {
+
+    const animalExistente = await Animal.findOne({
+        caravana: datos.caravana
+    });
+
+    if (animalExistente) {
+        return null;
+    }
+
     return await Animal.create(datos);
 }
 

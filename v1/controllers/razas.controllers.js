@@ -24,7 +24,14 @@ export async function obtenerRaza(req, res) {
 }
 
 export async function crearRaza(req, res) {
+
     const raza = await crearRazaService(req.body);
+
+    if (!raza) {
+        return res.status(409).json({
+            error: "Ya existe una raza con ese nombre"
+        });
+    }
 
     res.status(201).json(raza);
 }

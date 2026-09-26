@@ -29,6 +29,15 @@ export async function obtenerRaza(id) {
 }
 
 export async function crearRaza(datos) {
+
+    const razaExistente = await Raza.findOne({
+        nombre: datos.nombre
+    });
+
+    if (razaExistente) {
+        return null;
+    }
+
     return await Raza.create(datos);
 }
 

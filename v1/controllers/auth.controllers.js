@@ -3,7 +3,14 @@ import { registrarUsuario as registrarUsuarioService } from "../services/auth.se
 import { iniciarSesion as iniciarSesionService } from "../services/auth.service.js";
 
 export async function registrarUsuario(req, res) {
+
     const usuario = await registrarUsuarioService(req.body);
+
+    if (!usuario) {
+        return res.status(409).json({
+            error: "Ya existe un usuario con ese username"
+        });
+    }
 
     const usuarioRespuesta = {
         id: usuario._id,

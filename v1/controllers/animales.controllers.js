@@ -27,7 +27,14 @@ export async function obtenerAnimal(req, res) {
 }
 
 export async function crearAnimal(req, res) {
+
     const animal = await crearAnimalService(req.body);
+
+    if (!animal) {
+        return res.status(409).json({
+            error: "Ya existe un animal con esa caravana"
+        });
+    }
 
     res.status(201).json(animal);
 }
