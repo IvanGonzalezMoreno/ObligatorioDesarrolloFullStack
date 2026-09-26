@@ -2,8 +2,26 @@ import Raza from "../models/raza.model.js";
 
 import Animal from "../models/animal.model.js";
 
-export async function listarRazas() {
-    return await Raza.find();
+export async function listarRazas(paginacion = {}) {
+
+    const { page, limit } = parsearPaginacion(paginacion.page, paginacion.limit);
+
+    const skip = (page - 1) * limit;
+
+    const [razas, total] = await Promise.all([
+        Raza.find().skip(skip).limit(limit),
+        Raza.countDocuments()
+    ]);
+
+    return {
+        data: razas,
+        pagination: {
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit)
+        }
+    };
 }
 
 export async function obtenerRaza(id) {

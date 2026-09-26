@@ -9,9 +9,12 @@ import { modificarRaza as modificarRazaService } from "../services/razas.service
 import { eliminarRaza as eliminarRazaService } from "../services/razas.service.js";
 
 export async function listarRazas(req, res) {
-    const razas = await listarRazasService();
 
-    res.status(200).json(razas);
+    const { page, limit } = req.query;
+
+    const resultado = await listarRazasService({ page, limit });
+
+    res.status(200).json(resultado);
 }
 
 export async function obtenerRaza(req, res) {
