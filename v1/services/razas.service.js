@@ -4,22 +4,22 @@ import Animal from "../models/animal.model.js";
 
 export async function listarRazas(paginacion = {}) {
 
-    const { page, limit } = parsearPaginacion(paginacion.page, paginacion.limit);
+    const { page = 1, limit = 10 } = paginacion;
 
-    const skip = (page - 1) * limit;
+    const skip = (Number(page) - 1) * Number(limit);
 
     const [razas, total] = await Promise.all([
-        Raza.find().skip(skip).limit(limit),
+        Raza.find().skip(skip).limit(Number(limit)),
         Raza.countDocuments()
     ]);
 
     return {
         data: razas,
         pagination: {
-            page,
-            limit,
+            page: Number(page),
+            limit: Number(limit),
             total,
-            totalPages: Math.ceil(total / limit)
+            totalPages: Math.ceil(total / Number(limit))
         }
     };
 }

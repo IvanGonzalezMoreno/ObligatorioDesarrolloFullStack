@@ -18,7 +18,12 @@ export async function listarRazas(req, res) {
 }
 
 export async function obtenerRaza(req, res) {
+
     const raza = await obtenerRazaService(req.params.id);
+
+    if (!raza) {
+        return res.status(404).json({ error: "Raza no encontrada" });
+    }
 
     res.status(200).json(raza);
 }
@@ -37,7 +42,12 @@ export async function crearRaza(req, res) {
 }
 
 export async function modificarRaza(req, res) {
+
     const raza = await modificarRazaService(req.params.id, req.body);
+
+    if (!raza) {
+        return res.status(404).json({ error: "Raza no encontrada" });
+    }
 
     res.status(200).json(raza);
 }
