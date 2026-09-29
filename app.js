@@ -1,9 +1,12 @@
 import express from "express";
+import cors from "cors";
 
 import v1Routes from "./v1.routes.js";
 import { conectarBaseDeDatos } from "./v1/config/database.js";
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 

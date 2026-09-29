@@ -16,8 +16,8 @@ router.get("/:id", razasController.obtenerRaza);
 
 router.post("/", verificarAdmin, validateBodyMiddleware(crearRazaSchema), razasController.crearRaza);
 
-router.put("/:id", validateBodyMiddleware(modificarRazaSchema), razasController.modificarRaza);
+router.put("/:id", verificarAdmin, validateBodyMiddleware(modificarRazaSchema), razasController.modificarRaza);
 
-router.delete("/:id", razasController.eliminarRaza);
+router.delete("/:id", verificarAdmin, razasController.eliminarRaza);
 
 export default router;

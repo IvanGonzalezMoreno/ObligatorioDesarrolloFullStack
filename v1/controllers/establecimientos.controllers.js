@@ -25,7 +25,22 @@ export async function listarEstablecimientos(req, res) {
 }
 
 export async function obtenerEstablecimiento(req, res) {
+
     const establecimiento = await obtenerEstablecimientoService(req.params.id);
+
+    if (!establecimiento) {
+        return res.status(404).json({
+            error: "Establecimiento no encontrado"
+        });
+    }
+
+    const esDueño = establecimiento.usuario.toString() === req.usuario.id;
+
+    if (!esDueño && req.usuario.rol !== "admin") {
+        return res.status(403).json({
+            error: "No tenés permiso sobre este establecimiento"
+        });
+    }
 
     res.status(200).json(establecimiento);
 }
@@ -46,12 +61,46 @@ export async function crearEstablecimiento(req, res) {
 }
 
 export async function modificarEstablecimiento(req, res) {
+
+    const establecimientoActual = await obtenerEstablecimientoService(req.params.id);
+
+    if (!establecimientoActual) {
+        return res.status(404).json({
+            error: "Establecimiento no encontrado"
+        });
+    }
+
+    const esDueño = establecimientoActual.usuario.toString() === req.usuario.id;
+
+    if (!esDueño && req.usuario.rol !== "admin") {
+        return res.status(403).json({
+            error: "No tenés permiso sobre este establecimiento"
+        });
+    }
+
     const establecimiento = await modificarEstablecimientoService(req.params.id, req.body);
 
     res.status(200).json(establecimiento);
 }
 
 export async function eliminarEstablecimiento(req, res) {
+
+    const establecimientoActual = await obtenerEstablecimientoService(req.params.id);
+
+    if (!establecimientoActual) {
+        return res.status(404).json({
+            error: "Establecimiento no encontrado"
+        });
+    }
+
+    const esDueño = establecimientoActual.usuario.toString() === req.usuario.id;
+
+    if (!esDueño && req.usuario.rol !== "admin") {
+        return res.status(403).json({
+            error: "No tenés permiso sobre este establecimiento"
+        });
+    }
+
     const establecimiento = await eliminarEstablecimientoService(req.params.id);
 
     res.status(200).json(establecimiento);
