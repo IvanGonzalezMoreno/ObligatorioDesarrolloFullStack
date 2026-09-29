@@ -1,25 +1,17 @@
 import { listarEstablecimientos as listarEstablecimientosService } from "../services/establecimientos.service.js";
-
 import { obtenerEstablecimiento as obtenerEstablecimientoService } from "../services/establecimientos.service.js";
-
 import { crearEstablecimiento as crearEstablecimientoService } from "../services/establecimientos.service.js";
-
 import { modificarEstablecimiento as modificarEstablecimientoService } from "../services/establecimientos.service.js";
-
 import { eliminarEstablecimiento as eliminarEstablecimientoService } from "../services/establecimientos.service.js";
-
 import { analizarEstablecimiento as analizarEstablecimientoService } from "../services/establecimientos.service.js";
-
 import { obtenerClimaEstablecimiento as obtenerClimaEstablecimientoService } from "../services/establecimientos.service.js";
+import { esDueñoOAdmin } from "../utils/autorizacion.utils.js";
 
 export async function listarEstablecimientos(req, res) {
 
     const { departamento, page, limit } = req.query;
 
-    const resultado = await listarEstablecimientosService(
-        { departamento },
-        { page, limit }
-    );
+    const resultado = await listarEstablecimientosService({ departamento }, { page, limit });
 
     res.status(200).json(resultado);
 }
@@ -29,17 +21,11 @@ export async function obtenerEstablecimiento(req, res) {
     const establecimiento = await obtenerEstablecimientoService(req.params.id);
 
     if (!establecimiento) {
-        return res.status(404).json({
-            error: "Establecimiento no encontrado"
-        });
+        return res.status(404).json({ error: "Establecimiento no encontrado" });
     }
 
-    const esDueño = establecimiento.usuario.toString() === req.usuario.id;
-
-    if (!esDueño && req.usuario.rol !== "admin") {
-        return res.status(403).json({
-            error: "No tenés permiso sobre este establecimiento"
-        });
+    if (!esDueñoOAdmin(establecimiento, req.usuario)) {
+        return res.status(403).json({ error: "No tenés permiso sobre este establecimiento" });
     }
 
     res.status(200).json(establecimiento);
@@ -47,9 +33,7 @@ export async function obtenerEstablecimiento(req, res) {
 
 export async function crearEstablecimiento(req, res) {
 
-    const establecimiento = await crearEstablecimientoService(
-        req.body, req.usuario.id
-    );
+    const establecimiento = await crearEstablecimientoService(req.body, req.usuario.id);
 
     if (establecimiento === null) {
         return res.status(400).json({
@@ -65,17 +49,11 @@ export async function modificarEstablecimiento(req, res) {
     const establecimientoActual = await obtenerEstablecimientoService(req.params.id);
 
     if (!establecimientoActual) {
-        return res.status(404).json({
-            error: "Establecimiento no encontrado"
-        });
+        return res.status(404).json({ error: "Establecimiento no encontrado" });
     }
 
-    const esDueño = establecimientoActual.usuario.toString() === req.usuario.id;
-
-    if (!esDueño && req.usuario.rol !== "admin") {
-        return res.status(403).json({
-            error: "No tenés permiso sobre este establecimiento"
-        });
+    if (!esDueñoOAdmin(establecimientoActual, req.usuario)) {
+        return res.status(403).json({ error: "No tenés permiso sobre este establecimiento" });
     }
 
     const establecimiento = await modificarEstablecimientoService(req.params.id, req.body);
@@ -88,17 +66,11 @@ export async function eliminarEstablecimiento(req, res) {
     const establecimientoActual = await obtenerEstablecimientoService(req.params.id);
 
     if (!establecimientoActual) {
-        return res.status(404).json({
-            error: "Establecimiento no encontrado"
-        });
+        return res.status(404).json({ error: "Establecimiento no encontrado" });
     }
 
-    const esDueño = establecimientoActual.usuario.toString() === req.usuario.id;
-
-    if (!esDueño && req.usuario.rol !== "admin") {
-        return res.status(403).json({
-            error: "No tenés permiso sobre este establecimiento"
-        });
+    if (!esDueñoOAdmin(establecimientoActual, req.usuario)) {
+        return res.status(403).json({ error: "No tenés permiso sobre este establecimiento" });
     }
 
     const establecimiento = await eliminarEstablecimientoService(req.params.id);
@@ -107,19 +79,14 @@ export async function eliminarEstablecimiento(req, res) {
 }
 
 export async function analizarEstablecimiento(req, res) {
-    const analisis = await analizarEstablecimientoService(
-        req.params.id
-    );
+
+    const analisis = await analizarEstablecimientoService(req.params.id);
 
     if (!analisis) {
-        return res.status(503).json({
-            error: "El servicio de análisis no está disponible"
-        });
+        return res.status(503).json({ error: "El servicio de análisis no está disponible" });
     }
 
-    res.status(200).json({
-        analisis
-    });
+    res.status(200).json({ analisis });
 }
 
 export async function obtenerClimaEstablecimiento(req, res) {
@@ -127,15 +94,11 @@ export async function obtenerClimaEstablecimiento(req, res) {
     const resultado = await obtenerClimaEstablecimientoService(req.params.id);
 
     if (!resultado.encontrado) {
-        return res.status(404).json({
-            error: "Establecimiento no encontrado"
-        });
+        return res.status(404).json({ error: "Establecimiento no encontrado" });
     }
 
     if (!resultado.clima) {
-        return res.status(503).json({
-            error: "El servicio de clima no está disponible"
-        });
+        return res.status(503).json({ error: "El servicio de clima no está disponible" });
     }
 
     res.status(200).json(resultado.clima);
