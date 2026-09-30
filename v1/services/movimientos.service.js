@@ -1,4 +1,5 @@
 import Movimiento from "../models/movimiento.model.js";
+import Animal from "../models/animal.model.js";
 
 export async function listarMovimientos(filtros = {}, paginacion = {}) {
 
@@ -48,13 +49,54 @@ export async function obtenerMovimiento(id) {
 }
 
 export async function crearMovimiento(datos) {
-    return await Movimiento.create(datos);
+
+    const animal = await Animal.findById(datos.animal);
+
+    if (!animal) {
+        return null;
+    }
+
+    if (animal.establecimiento.toString() !== datos.establecimientoOrigen) {
+        return null;
+    }
+
+    const movimiento = await Movimiento.create(datos);
+
+    await Animal.findByIdAndUpdate(datos.animal, {
+        establecimiento: datos.establecimientoDestino
+    });
+
+    return movimiento;
 }
 
 export async function modificarMovimiento(id, datos) {
-    return await Movimiento.findByIdAndUpdate(id, datos, { new: true });
+
+    const movimiento = await Movimiento.findByIdAndUpdate(id, datos, { new: true });
+
+    if (!movimiento) {
+        return null;
+    }
+
+    if (datos.establecimientoDestino) {
+        await Animal.findByIdAndUpdate(movimiento.animal, {
+            establecimiento: datos.establecimientoDestino
+        });
+    }
+
+    return movimiento;
 }
 
 export async function eliminarMovimiento(id) {
-    return await Movimiento.findByIdAndDelete(id);
+
+    const movimiento = await Movimiento.findByIdAndDelete(id);
+
+    if (!movimiento) {
+        return null;
+    }
+
+    await Animal.findByIdAndUpdate(movimiento.animal, {
+        establecimiento: movimiento.establecimientoOrigen
+    });
+
+    return movimiento;
 }

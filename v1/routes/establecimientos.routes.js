@@ -12,6 +12,8 @@ router.get("/", establecimientosController.listarEstablecimientos);
 
 router.post("/:id/analisis", establecimientosController.analizarEstablecimiento);
 
+router.get("/:id/resumen", establecimientosController.obtenerResumenEstablecimiento);
+
 router.get("/:id/clima", establecimientosController.obtenerClimaEstablecimiento);
 
 router.post("/:id/alerta-clima", establecimientosController.generarAlertaClimatica);

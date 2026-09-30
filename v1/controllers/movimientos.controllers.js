@@ -33,6 +33,12 @@ export async function crearMovimiento(req, res) {
 
     const movimiento = await crearMovimientoService(req.body);
 
+    if (!movimiento) {
+        return res.status(400).json({
+            error: "El animal no está en el establecimiento de origen indicado, o no existe"
+        });
+    }
+
     res.status(201).json(movimiento);
 }
 

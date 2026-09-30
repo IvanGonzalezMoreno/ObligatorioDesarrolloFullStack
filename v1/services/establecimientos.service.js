@@ -160,3 +160,38 @@ export async function generarAlertaClimatica(id) {
 
     return { encontrado: true, clima, alerta };
 }
+
+export async function obtenerResumenEstablecimiento(id) {
+
+    const establecimiento = await Establecimiento.findById(id);
+
+    if (!establecimiento) {
+        return { encontrado: false };
+    }
+
+    const animales = await Animal.find({ establecimiento: id }).populate("raza");
+
+    if (animales.length === 0) {
+        return {
+            encontrado: true,
+            resumen: { cantidadAnimales: 0, pesoPromedio: 0, porRaza: [] }
+        };
+    }
+
+    const pesoTotal = animales.reduce((suma, animal) => suma + animal.peso, 0);
+    const pesoPromedio = Number((pesoTotal / animales.length).toFixed(2));
+
+    const conteoPorRaza = {};
+
+    animales.forEach(animal => {
+        const nombreRaza = animal.raza?.nombre || "Sin raza";
+        conteoPorRaza[nombreRaza] = (conteoPorRaza[nombreRaza] || 0) + 1;
+    });
+
+    const porRaza = Object.entries(conteoPorRaza).map(([raza, cantidad]) => ({ raza, cantidad }));
+
+    return {
+        encontrado: true,
+        resumen: { cantidadAnimales: animales.length, pesoPromedio, porRaza }
+    };
+}
