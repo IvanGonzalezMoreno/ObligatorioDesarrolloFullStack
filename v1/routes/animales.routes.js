@@ -10,6 +10,8 @@ const router = express.Router();
 
 router.get("/", animalesController.listarAnimales);
 
+router.get("/:id/trazabilidad", animalesController.obtenerTrazabilidadAnimal);
+
 router.get("/:id", animalesController.obtenerAnimal);
 
 router.post("/", validateBodyMiddleware(crearAnimalSchema), animalesController.crearAnimal);

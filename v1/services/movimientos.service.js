@@ -115,3 +115,10 @@ export async function eliminarMovimiento(id) {
 
     return movimiento;
 }
+
+export async function listarMovimientosPorAnimal(animalId) {
+    return await Movimiento.find({ animal: animalId })
+        .sort({ fecha: 1 })
+        .populate("establecimientoOrigen")
+        .populate("establecimientoDestino");
+}

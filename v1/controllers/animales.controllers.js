@@ -5,6 +5,7 @@ import { modificarAnimal as modificarAnimalService } from "../services/animales.
 import { eliminarAnimal as eliminarAnimalService } from "../services/animales.service.js";
 import { obtenerEstablecimiento as obtenerEstablecimientoService } from "../services/establecimientos.service.js";
 import { esDueñoOAdmin } from "../utils/autorizacion.utils.js";
+import { listarMovimientosPorAnimal as listarMovimientosPorAnimalService } from "../services/movimientos.service.js";
 
 export async function listarAnimales(req, res) {
 
@@ -87,4 +88,25 @@ export async function eliminarAnimal(req, res) {
     const animalEliminado = await eliminarAnimalService(req.params.id);
 
     res.status(200).json(animalEliminado);
+}
+
+export async function obtenerTrazabilidadAnimal(req, res) {
+
+    const animal = await obtenerAnimalService(req.params.id);
+
+    if (!animal) {
+        return res.status(404).json({ error: "Animal no encontrado" });
+    }
+
+    if (!esDueñoOAdmin(animal.establecimiento, req.usuario)) {
+        return res.status(403).json({ error: "No tenés permiso sobre este animal" });
+    }
+
+    const movimientos = await listarMovimientosPorAnimalService(req.params.id);
+
+    res.status(200).json({
+        animal: { _id: animal._id, caravana: animal.caravana },
+        cantidadMovimientos: movimientos.length,
+        movimientos
+    });
 }
