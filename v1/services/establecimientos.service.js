@@ -8,6 +8,8 @@ import { generarRespuesta } from "./ai.services.js";
 
 import { obtenerClimaPorDepartamento } from "./clima.service.js";
 
+import { generarRespuesta } from "./ai.services.js";
+
 export async function listarEstablecimientos(filtros = {}, paginacion = {}) {
 
     const { departamento } = filtros;
@@ -128,4 +130,35 @@ export async function obtenerClimaEstablecimiento(id) {
     }
 
     return { encontrado: true, clima };
+}
+
+export async function generarAlertaClimatica(id) {
+
+    const establecimiento = await Establecimiento.findById(id);
+
+    if (!establecimiento) {
+        return { encontrado: false };
+    }
+
+    const clima = await obtenerClimaPorDepartamento(establecimiento.departamento);
+
+    if (!clima) {
+        return { encontrado: true, alerta: null };
+    }
+
+    const prompt = `Sos un asistente agropecuario. La temperatura actual en un establecimiento ganadero es de ${clima.temperatura}°C, con ${clima.humedad}% de humedad y viento de ${clima.viento} km/h.
+
+    Si estas condiciones representan un riesgo para el bienestar del ganado (frío o calor extremo, viento fuerte), escribí una alerta breve de 1-2 oraciones explicando el riesgo y una recomendación concreta.
+
+    Si las condiciones son normales y no hay riesgo, respondé únicamente: "Condiciones climáticas normales, sin riesgo para el ganado."
+
+    Responde en texto plano, sin Markdown, sin símbolos especiales, breve y claro.`;
+
+    const alerta = await generarRespuesta(prompt);
+
+    if (!alerta) {
+        return { encontrado: true, alerta: null };
+    }
+
+    return { encontrado: true, clima, alerta };
 }

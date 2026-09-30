@@ -6,6 +6,7 @@ import { eliminarEstablecimiento as eliminarEstablecimientoService } from "../se
 import { analizarEstablecimiento as analizarEstablecimientoService } from "../services/establecimientos.service.js";
 import { obtenerClimaEstablecimiento as obtenerClimaEstablecimientoService } from "../services/establecimientos.service.js";
 import { esDueñoOAdmin } from "../utils/autorizacion.utils.js";
+import { generarAlertaClimatica as generarAlertaClimaticaService } from "../services/establecimientos.service.js";
 
 export async function listarEstablecimientos(req, res) {
 
@@ -102,4 +103,19 @@ export async function obtenerClimaEstablecimiento(req, res) {
     }
 
     res.status(200).json(resultado.clima);
+}
+
+export async function generarAlertaClimatica(req, res) {
+
+    const resultado = await generarAlertaClimaticaService(req.params.id);
+
+    if (!resultado.encontrado) {
+        return res.status(404).json({ error: "Establecimiento no encontrado" });
+    }
+
+    if (!resultado.alerta) {
+        return res.status(503).json({ error: "El servicio de alertas no está disponible" });
+    }
+
+    res.status(200).json(resultado);
 }
