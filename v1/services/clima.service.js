@@ -8,7 +8,7 @@ export async function obtenerClimaPorDepartamento(departamento) {
         return null;
     }
 
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${coordenadas.lat}&longitude=${coordenadas.lon}&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&timezone=America%2FMontevideo`;
+    const url = `https://api.weatherapi.com/v1/current.json?key=${process.env.WEATHERAPI_KEY}&q=${coordenadas.lat},${coordenadas.lon}`;
 
     try {
         const respuesta = await fetch(url);
@@ -21,12 +21,12 @@ export async function obtenerClimaPorDepartamento(departamento) {
 
         return {
             departamento,
-            temperatura: datos.current.temperature_2m,
-            humedad: datos.current.relative_humidity_2m,
-            precipitacion: datos.current.precipitation,
-            viento: datos.current.wind_speed_10m,
-            unidad_temperatura: datos.current_units.temperature_2m,
-            medido_en: datos.current.time
+            temperatura: datos.current.temp_c,
+            humedad: datos.current.humidity,
+            precipitacion: datos.current.precip_mm,
+            viento: datos.current.wind_kph,
+            unidad_temperatura: "°C",
+            medido_en: datos.current.last_updated
         };
 
     } catch (error) {
