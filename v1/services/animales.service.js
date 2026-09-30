@@ -1,6 +1,8 @@
 import Animal from "../models/animal.model.js";
 
-export async function listarAnimales(filtros = {}, paginacion = {}) {
+import Establecimiento from "../models/establecimiento.model.js";
+
+export async function listarAnimales(filtros = {}, paginacion = {}, usuario) {
 
     const { raza, establecimiento, pesoMin, pesoMax } = filtros;
     const { page = 1, limit = 10 } = paginacion;
@@ -14,6 +16,11 @@ export async function listarAnimales(filtros = {}, paginacion = {}) {
         query.peso = {};
         if (pesoMin) query.peso.$gte = Number(pesoMin);
         if (pesoMax) query.peso.$lte = Number(pesoMax);
+    }
+
+    if (usuario.rol !== "admin") {
+        const establecimientosPropios = await Establecimiento.find({ usuario: usuario.id }).select("_id");
+        query.establecimiento = { $in: establecimientosPropios.map(e => e._id) };
     }
 
     const skip = (Number(page) - 1) * Number(limit);

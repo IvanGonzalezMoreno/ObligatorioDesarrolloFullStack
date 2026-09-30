@@ -12,7 +12,8 @@ export async function listarMovimientos(req, res) {
 
     const resultado = await listarMovimientosService(
         { animal, establecimientoOrigen, establecimientoDestino, fechaDesde, fechaHasta },
-        { page, limit }
+        { page, limit },
+        req.usuario
     );
 
     res.status(200).json(resultado);

@@ -8,7 +8,7 @@ import { generarRespuesta } from "./ai.services.js";
 
 import { obtenerClimaPorDepartamento } from "./clima.service.js";
 
-export async function listarEstablecimientos(filtros = {}, paginacion = {}) {
+export async function listarEstablecimientos(filtros = {}, paginacion = {}, usuario) {
 
     const { departamento } = filtros;
     const { page = 1, limit = 10 } = paginacion;
@@ -16,6 +16,10 @@ export async function listarEstablecimientos(filtros = {}, paginacion = {}) {
     const query = {};
 
     if (departamento) query.departamento = departamento;
+
+    if (usuario.rol !== "admin") {
+        query.usuario = usuario.id;
+    }
 
     const skip = (Number(page) - 1) * Number(limit);
 

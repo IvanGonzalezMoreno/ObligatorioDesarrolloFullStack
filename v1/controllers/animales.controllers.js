@@ -12,7 +12,8 @@ export async function listarAnimales(req, res) {
 
     const resultado = await listarAnimalesService(
         { raza, establecimiento, pesoMin, pesoMax },
-        { page, limit }
+        { page, limit },
+        req.usuario
     );
 
     res.status(200).json(resultado);

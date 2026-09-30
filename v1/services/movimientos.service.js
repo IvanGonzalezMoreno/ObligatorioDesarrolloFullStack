@@ -1,7 +1,8 @@
 import Movimiento from "../models/movimiento.model.js";
 import Animal from "../models/animal.model.js";
+import Establecimiento from "../models/establecimiento.model.js";
 
-export async function listarMovimientos(filtros = {}, paginacion = {}) {
+export async function listarMovimientos(filtros = {}, paginacion = {}, usuario) {
 
     const { animal, establecimientoOrigen, establecimientoDestino, fechaDesde, fechaHasta } = filtros;
     const { page = 1, limit = 10 } = paginacion;
@@ -16,6 +17,20 @@ export async function listarMovimientos(filtros = {}, paginacion = {}) {
         query.fecha = {};
         if (fechaDesde) query.fecha.$gte = new Date(fechaDesde);
         if (fechaHasta) query.fecha.$lte = new Date(fechaHasta);
+    }
+
+    if (usuario.rol !== "admin") {
+        const establecimientosPropios = await Establecimiento.find({ usuario: usuario.id }).select("_id");
+        const ids = establecimientosPropios.map(e => e._id);
+
+        query.$and = [
+            { $or: [{ establecimientoOrigen: { $in: ids } }, { establecimientoDestino: { $in: ids } }] }
+        ];
+
+        if (establecimientoOrigen) query.$and.push({ establecimientoOrigen });
+        if (establecimientoDestino) query.$and.push({ establecimientoDestino });
+        delete query.establecimientoOrigen;
+        delete query.establecimientoDestino;
     }
 
     const skip = (Number(page) - 1) * Number(limit);

@@ -13,7 +13,7 @@ export async function listarEstablecimientos(req, res) {
 
     const { departamento, page, limit } = req.query;
 
-    const resultado = await listarEstablecimientosService({ departamento }, { page, limit });
+    const resultado = await listarEstablecimientosService({ departamento }, { page, limit }, req.usuario);
 
     res.status(200).json(resultado);
 }
