@@ -8,8 +8,6 @@ import { generarRespuesta } from "./ai.services.js";
 
 import { obtenerClimaPorDepartamento } from "./clima.service.js";
 
-import { generarRespuesta } from "./ai.services.js";
-
 export async function listarEstablecimientos(filtros = {}, paginacion = {}) {
 
     const { departamento } = filtros;
