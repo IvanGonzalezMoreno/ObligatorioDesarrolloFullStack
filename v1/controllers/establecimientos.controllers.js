@@ -82,6 +82,16 @@ export async function eliminarEstablecimiento(req, res) {
 
 export async function analizarEstablecimiento(req, res) {
 
+    const establecimiento = await obtenerEstablecimientoService(req.params.id);
+
+    if (!establecimiento) {
+        return res.status(404).json({ error: "Establecimiento no encontrado" });
+    }
+
+    if (!esDueñoOAdmin(establecimiento, req.usuario)) {
+        return res.status(403).json({ error: "No tenés permiso sobre este establecimiento" });
+    }
+
     const analisis = await analizarEstablecimientoService(req.params.id);
 
     if (!analisis) {
@@ -93,11 +103,17 @@ export async function analizarEstablecimiento(req, res) {
 
 export async function obtenerClimaEstablecimiento(req, res) {
 
-    const resultado = await obtenerClimaEstablecimientoService(req.params.id);
+    const establecimiento = await obtenerEstablecimientoService(req.params.id);
 
-    if (!resultado.encontrado) {
+    if (!establecimiento) {
         return res.status(404).json({ error: "Establecimiento no encontrado" });
     }
+
+    if (!esDueñoOAdmin(establecimiento, req.usuario)) {
+        return res.status(403).json({ error: "No tenés permiso sobre este establecimiento" });
+    }
+
+    const resultado = await obtenerClimaEstablecimientoService(req.params.id);
 
     if (!resultado.clima) {
         return res.status(503).json({ error: "El servicio de clima no está disponible" });
@@ -108,11 +124,17 @@ export async function obtenerClimaEstablecimiento(req, res) {
 
 export async function generarAlertaClimatica(req, res) {
 
-    const resultado = await generarAlertaClimaticaService(req.params.id);
+    const establecimiento = await obtenerEstablecimientoService(req.params.id);
 
-    if (!resultado.encontrado) {
+    if (!establecimiento) {
         return res.status(404).json({ error: "Establecimiento no encontrado" });
     }
+
+    if (!esDueñoOAdmin(establecimiento, req.usuario)) {
+        return res.status(403).json({ error: "No tenés permiso sobre este establecimiento" });
+    }
+
+    const resultado = await generarAlertaClimaticaService(req.params.id);
 
     if (!resultado.alerta) {
         return res.status(503).json({ error: "El servicio de alertas no está disponible" });
@@ -121,13 +143,20 @@ export async function generarAlertaClimatica(req, res) {
     res.status(200).json(resultado);
 }
 
+
 export async function obtenerResumenEstablecimiento(req, res) {
 
-    const resultado = await obtenerResumenEstablecimientoService(req.params.id);
+    const establecimiento = await obtenerEstablecimientoService(req.params.id);
 
-    if (!resultado.encontrado) {
+    if (!establecimiento) {
         return res.status(404).json({ error: "Establecimiento no encontrado" });
     }
+
+    if (!esDueñoOAdmin(establecimiento, req.usuario)) {
+        return res.status(403).json({ error: "No tenés permiso sobre este establecimiento" });
+    }
+
+    const resultado = await obtenerResumenEstablecimientoService(req.params.id);
 
     res.status(200).json(resultado.resumen);
 }
