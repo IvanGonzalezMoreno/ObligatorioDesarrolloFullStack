@@ -10,14 +10,29 @@ export async function obtenerClimaPorDepartamento(departamento) {
 
     const url = `https://api.weatherapi.com/v1/current.json?key=${process.env.WEATHERAPI_KEY}&q=${coordenadas.lat},${coordenadas.lon}`;
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
     try {
-        const respuesta = await fetch(url);
+        const respuesta = await fetch(url, { signal: controller.signal });
+
+        clearTimeout(timeoutId);
 
         if (!respuesta.ok) {
             return null;
         }
 
         const datos = await respuesta.json();
+
+        const datosValidos = datos?.current
+            && typeof datos.current.temp_c === "number"
+            && typeof datos.current.humidity === "number"
+            && typeof datos.current.precip_mm === "number"
+            && typeof datos.current.wind_kph === "number";
+
+        if (!datosValidos) {
+            return null;
+        }
 
         return {
             departamento,
@@ -30,6 +45,7 @@ export async function obtenerClimaPorDepartamento(departamento) {
         };
 
     } catch (error) {
+        clearTimeout(timeoutId);
         return null;
     }
 }

@@ -18,7 +18,12 @@ export const subirImagen = async (req, res) => {
         const result = await uploadBufferToCloudinary(cloudinary, req.file.buffer, {
             resource_type: "auto",
             folder,
+            timeout: 15000
         });
+
+        if (!result?.secure_url) {
+            return res.status(503).json({ error: "El servicio de imágenes no está disponible" });
+        }
 
         return res.json({ url: result.secure_url, folder: result.folder });
     } catch (error) {
