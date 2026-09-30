@@ -11,13 +11,19 @@ export async function generarRespuesta(prompt) {
 
     try {
         const chatCompletion = await groq.chat.completions.create({
-            messages: [{ role: "user", content: prompt }],
+            messages: [
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ],
             model: "openai/gpt-oss-120b",
             temperature: 1,
             max_completion_tokens: 2048,
             top_p: 1,
             stream: false,
-            reasoning_effort: "medium",
+            reasoning_effort: "medium"
+        }, {
             timeout: 10000
         });
 
