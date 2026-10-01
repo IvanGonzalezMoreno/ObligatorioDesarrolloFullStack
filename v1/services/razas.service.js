@@ -46,11 +46,20 @@ export async function modificarRaza(id, datos) {
 }
 
 export async function eliminarRaza(id) {
-    const animales = await Animal.find({ raza: id });
 
-    if(animales.length > 0) {
-        return null;
+    const raza = await Raza.findById(id);
+
+    if (!raza) {
+        return { encontrada: false };
     }
 
-    return await Raza.findByIdAndDelete(id);
+    const animales = await Animal.find({ raza: id });
+
+    if (animales.length > 0) {
+        return { encontrada: true, eliminada: false };
+    }
+
+    await Raza.findByIdAndDelete(id);
+
+    return { encontrada: true, eliminada: true, raza };
 }

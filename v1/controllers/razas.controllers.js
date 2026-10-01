@@ -53,13 +53,18 @@ export async function modificarRaza(req, res) {
 }
 
 export async function eliminarRaza(req, res) {
-    const raza = await eliminarRazaService(req.params.id);
-    
-    if(raza === null) {
+
+    const resultado = await eliminarRazaService(req.params.id);
+
+    if (!resultado.encontrada) {
+        return res.status(404).json({ error: "Raza no encontrada" });
+    }
+
+    if (!resultado.eliminada) {
         return res.status(400).json({
             error: "No se puede eliminar la raza porque tiene animales asociados"
         });
     }
 
-    res.status(200).json(raza);
+    res.status(200).json(resultado.raza);
 }
