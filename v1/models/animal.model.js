@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const animalSchema = new mongoose.Schema ({
+const animalSchema = new mongoose.Schema({
 
     caravana: {
         type: String,
@@ -18,11 +18,16 @@ const animalSchema = new mongoose.Schema ({
         type: Number,
         required: true
     },
-    
+
     establecimiento: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Establecimiento",
         required: true
+    },
+
+    imagen: {
+        type: String,
+        required: false
     },
 });
 
