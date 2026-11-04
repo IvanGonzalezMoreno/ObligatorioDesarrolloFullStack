@@ -32,7 +32,7 @@ export async function crearAnimal(req, res) {
         return res.status(403).json({ error: "No tenés permiso sobre ese establecimiento" });
     }
 
-    const animal = await crearAnimalService(req.body);
+    const animal = await crearAnimalService(req.validateBody);
 
     if (!animal) {
         return res.status(409).json({ error: "Ya existe un animal con esa caravana" });
@@ -68,7 +68,7 @@ export async function modificarAnimal(req, res) {
         return res.status(403).json({ error: "No tenés permiso sobre este animal" });
     }
 
-    const animalActualizado = await modificarAnimalService(req.params.id, req.body);
+    const animalActualizado = await modificarAnimalService(req.params.id, req.validateBody);
 
     res.status(200).json(animalActualizado);
 }
