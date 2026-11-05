@@ -38,5 +38,7 @@ export const modificarAnimalSchema = Joi.object({
         "number.base": "El peso debe ser un número",
     }),
 
+    establecimiento: Joi.string(),
+
     imagen: Joi.string().allow("")
 });
