@@ -20,7 +20,15 @@ export async function listarAnimales(filtros = {}, paginacion = {}, usuario) {
 
     if (usuario.rol !== "admin") {
         const establecimientosPropios = await Establecimiento.find({ usuario: usuario.id }).select("_id");
-        query.establecimiento = { $in: establecimientosPropios.map(e => e._id) };
+        const idsPropios = establecimientosPropios.map(e => e._id);
+
+        if (establecimiento) {
+            query.establecimiento = {
+                $in: idsPropios.filter(id => id.toString() === establecimiento)
+            };
+        } else {
+            query.establecimiento = { $in: idsPropios };
+        }
     }
 
     const skip = (Number(page) - 1) * Number(limit);
