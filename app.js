@@ -10,6 +10,15 @@ app.use(cors());
 
 app.use(express.json());
 
+app.use(async (req, res, next) => {
+    try {
+        await conectarBaseDeDatos();
+        next();
+    } catch (error) {
+        res.status(503).json({ error: "Base de datos no disponible" });
+    }
+});
+
 app.use("/v1", v1Routes);
 
 app.use((req, res) => {
@@ -34,7 +43,5 @@ app.use((err, req, res, next) => {
 
     res.status(500).json({ error: "Error interno del servidor" });
 });
-
-conectarBaseDeDatos();
 
 export default app;
