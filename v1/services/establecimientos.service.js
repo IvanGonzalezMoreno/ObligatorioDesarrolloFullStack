@@ -68,6 +68,14 @@ export async function modificarEstablecimiento(id, datos) {
 }
 
 export async function eliminarEstablecimiento(id) {
+    const cantidadAnimales = await Animal.countDocuments({
+        establecimiento: id
+    });
+
+    if (cantidadAnimales > 0) {
+        return null;
+    }
+
     return await Establecimiento.findByIdAndDelete(id);
 }
 

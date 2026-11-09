@@ -77,6 +77,12 @@ export async function eliminarEstablecimiento(req, res) {
 
     const establecimiento = await eliminarEstablecimientoService(req.params.id);
 
+    if (!establecimiento) {
+        return res.status(400).json({
+            error: "No se puede eliminar el establecimiento porque tiene animales registrados."
+        });
+    }
+
     res.status(200).json(establecimiento);
 }
 
